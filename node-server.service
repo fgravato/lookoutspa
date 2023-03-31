@@ -1,0 +1,13 @@
+[Unit]
+Description="CipherCloud Node Server"
+After=network.target
+
+[Service]
+Type=simple
+ExecStartPre=/etc/init.d/node-server start
+ExecStopPost=/etc/init.d/node-server stop
+ExecStart=/bin/sh -ec 'while /etc/init.d/node-server status | grep Running > /dev/null; do sleep 3; done'
+Restart=no
+
+[Install]
+WantedBy=multi-user.target

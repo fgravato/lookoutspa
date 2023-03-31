@@ -85,7 +85,7 @@ RUN   touch /etc/init/node-server.conf
 
 # Download and install the enterprise connector
 RUN wget http://shell.fuse969.com/enterprise-connector_22.10.0-490_amd64.deb && \
-    dpkg -i enterprise-connector_22.10.0-490_amd64.deb && \
+   RUN dpkg -i enterprise-connector_22.10.0-490_amd64.deb || true
     rm enterprise-connector_22.10.0-490_amd64.deb
 
 # Update the dynamic linker configuration

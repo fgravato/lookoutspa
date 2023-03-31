@@ -1,5 +1,17 @@
 FROM ubuntu:20.04
 
+# Set the time zone
+ENV TZ=America/New_York
+
+# Install the necessary packages, including tzdata
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    tzdata
+
+# Configure the time zone using the TZ environment variable
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && \
+    echo $TZ > /etc/timezone
+    
 # Install necessary packages including systemd
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \

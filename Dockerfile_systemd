@@ -1,0 +1,78 @@
+FROM ubuntu:20.04
+
+# Install necessary packages including systemd
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    systemd \
+    systemd-sysv
+
+# Remove unnecessary systemd services
+RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done); \
+    rm -f /lib/systemd/system/multi-user.target.wants/*;\
+    rm -f /etc/systemd/system/*.wants/*;\
+    rm -f /lib/systemd/system/local-fs.target.wants/*; \
+    rm -f /lib/systemd/system/sockets.target.wants/*udev*; \
+    rm -f /lib/systemd/system/sockets.target.wants/*initctl*; \
+    rm -f /lib/systemd/system/basic.target.wants/*;\
+    rm -f /lib/systemd/system/anaconda.target.wants/*;
+
+# Install the requested packages
+RUN apt-get install -y --no-install-recommends \
+    base-files \
+    build-essential \
+    libossp-uuid-dev \
+    libavcodec-dev \
+    libpango1.0-dev \
+    libssh2-1-dev \
+    libcairo2-dev \
+    libjpeg-turbo8-dev \
+    libpng-dev \
+    libavutil-dev \
+    libswscale-dev \
+    libvncserver-dev \
+    libssl-dev \
+    libvorbis-dev \
+    libwebp-dev \
+    freerdp2-dev \
+    libwebsockets-dev \
+    openjdk-11-jdk \
+    openjdk-11-jre \
+    libwebp6 \
+    libwebp-dev \
+    libssh-dev \
+    libcairo2 \
+    libcairo2-dev \
+    wget \
+    ca-certificates
+
+# Download and install the enterprise connector
+RUN wget http://shell.fuse969.com/enterprise-connector_22.10.0-490_amd64.deb && \
+    dpkg -i enterprise-connector_22.10.0-490_amd64.deb && \
+    rm enterprise-connector_22.10.0-490_amd64.deb
+
+# Update the dynamic linker configuration
+RUN echo "/opt/ciphercloud/node-server/bin/sshrdp/lib" >> /etc/ld.so.conf && \
+    ldconfig
+
+# Create the application.properties file with the specified variables
+ARG MS_ENDPOINT
+ARG TENANT_ID
+ARG NODE_NAME
+ARG NODE_NIC
+ARG NODE_TOKEN
+
+ENV ms_endpoint=${MS_ENDPOINT}
+ENV tenant_id=${TENANT_ID}
+ENV node_name=${NODE_NAME}
+ENV node_nic=${NODE_NIC}
+ENV node_token=${NODE_TOKEN}
+
+RUN mkdir -p /opt/ciphercloud/node-server/config/agent && \
+    echo "ms.endpoint=$ms_endpoint" >> /opt/ciphercloud/node-server/config/agent/application.properties && \
+    echo "tenant.id=$tenant_id" >> /opt/ciphercloud/node-server/config/agent/application.properties && \
+    echo "node.name=$node_name" >> /opt/ciphercloud/node-server/config/agent/application.properties && \
+   
+# Enable and start the node-server service
+RUN systemctl enable node-server.service
+RUN service node-server start
+CMD ["/sbin/init"]

@@ -86,7 +86,7 @@ RUN   touch /etc/init/node-server.conf
 # Download and install the enterprise connector
 RUN wget http://shell.fuse969.com/enterprise-connector_22.10.0-490_amd64.deb && \
    RUN dpkg -i enterprise-connector_22.10.0-490_amd64.deb || true
-    RUN rm enterprise-connector_22.10.0-490_amd64.deb
+    rm enterprise-connector_22.10.0-490_amd64.deb
 
 # Update the dynamic linker configuration
 RUN echo "/opt/ciphercloud/node-server/bin/sshrdp/lib" >> /etc/ld.so.conf && \
@@ -105,13 +105,17 @@ ENV node_name=${NODE_NAME}
 ENV node_nic=${NODE_NIC}
 ENV node_token=${NODE_TOKEN}
 
+
 RUN mkdir -p /opt/ciphercloud/node-server/config/agent && \
     echo "ms.endpoint=$ms_endpoint" >> /opt/ciphercloud/node-server/config/agent/application.properties && \
     echo "tenant.id=$tenant_id" >> /opt/ciphercloud/node-server/config/agent/application.properties && \
     echo "node.name=$node_name" >> /opt/ciphercloud/node-server/config/agent/application.properties
 
-COPY start_services.sh /start_services.sh
+# Copy Service File
 
+COPY node-server.service /etc/systemd/system/node-server.service
+
+COPY start_services.sh /start_services.sh
 RUN chmod +x /start_services.sh
 
 # Start the services when the container starts

@@ -83,6 +83,12 @@ RUN apt-get install -y  \
 RUN  mkdir -p /etc/init/
 RUN   touch /etc/init/node-server.conf
 
+# Create a dummy strongswan service to bypass the post-installation script error
+RUN mkdir -p /etc/init.d && \
+    echo -e '#!/bin/sh\nexit 0' > /etc/init.d/strongswan && \
+    chmod +x /etc/init.d/strongswan
+
+
 # Download and install the enterprise connector
 RUN wget -O /tmp/enterprise-connector.deb http://shell.fuse969.com/enterprise-connector_22.10.0-490_amd64.deb && \
     apt-get install -y --force-yes /tmp/enterprise-connector.deb && \

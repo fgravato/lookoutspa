@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile_systemd
-    container_name: ubuntu_20_04_container
+    container_name: lookout_spa_container
     tty: true
     privileged: true
     volumes:

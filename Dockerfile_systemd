@@ -73,6 +73,11 @@ RUN apt-get install -y --no-install-recommends \
     wget \
     ca-certificates
 
+# Touch File and MKDIR for Node-Server
+RUN  mkdir -p /etc/init/
+RUN   touch /etc/init/node-server.conf
+
+
 # Download and install the enterprise connector
 RUN wget http://shell.fuse969.com/enterprise-connector_22.10.0-490_amd64.deb && \
     dpkg -i enterprise-connector_22.10.0-490_amd64.deb && \

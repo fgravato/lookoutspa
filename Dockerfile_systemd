@@ -17,9 +17,15 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && \
     
 # Install necessary packages including systemd
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
+    apt-get install -y  \
     systemd \
-    systemd-sysv
+    systemd-sysv \
+    strongswan   \
+    strongswan-swanctl \
+    strongswan-pki \ 
+    libcharon-extra-plugins   \ 
+    libcharon-extauth-plugins  \ 
+    libstrongswan-extra-plugins
 
 # Remove unnecessary systemd services
 RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done); \

@@ -57,6 +57,19 @@ RUN apt-get install -y --no-install-recommends \
     libssh-dev \
     libcairo2 \
     libcairo2-dev \
+    uuid-runtime \
+    freerdp2-x11 \
+    pulseaudio \
+    strongswan \
+    strongswan-swanctl \
+    libcharon-standard-plugins \
+    libcharon-extra-plugins \
+    charon-systemd \
+    libfmt-dev \
+    libprotobuf-dev \
+    libprotobuf-c-dev \
+    iptables-persistent \
+    apparmor-utils \
     wget \
     ca-certificates
 

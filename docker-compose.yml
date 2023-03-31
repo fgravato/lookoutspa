@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  ubuntu-20.04:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ubuntu_20_04_container
+    tty: true

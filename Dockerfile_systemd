@@ -71,6 +71,12 @@ RUN mkdir -p /opt/ciphercloud/node-server/config/agent && \
     echo "ms.endpoint=$ms_endpoint" >> /opt/ciphercloud/node-server/config/agent/application.properties && \
     echo "tenant.id=$tenant_id" >> /opt/ciphercloud/node-server/config/agent/application.properties && \
     echo "node.name=$node_name" >> /opt/ciphercloud/node-server/config/agent/application.properties && \
-   
+
+# Copy the start_services.sh script to the container
+COPY start_services.sh /start_services.sh
+RUN chmod +x /start_services.sh
+
+# Start the services when the container starts
+CMD ["/start_services.sh"]   
 # Enable the node-server service
 RUN systemctl enable node-server.service

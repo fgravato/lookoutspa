@@ -3,6 +3,9 @@ FROM ubuntu:20.04
 # Set the time zone
 ENV TZ=America/New_York
 
+# Set the DEBIAN_FRONTEND environment variable
+ENV DEBIAN_FRONTEND=noninteractive
+
 # Install the necessary packages, including tzdata
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \

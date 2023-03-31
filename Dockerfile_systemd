@@ -109,7 +109,10 @@ ENV node_token=${NODE_TOKEN}
 RUN mkdir -p /opt/ciphercloud/node-server/config/agent && \
     echo "ms.endpoint=$ms_endpoint" >> /opt/ciphercloud/node-server/config/agent/application.properties && \
     echo "tenant.id=$tenant_id" >> /opt/ciphercloud/node-server/config/agent/application.properties && \
-    echo "node.name=$node_name" >> /opt/ciphercloud/node-server/config/agent/application.properties
+    echo "node.name=$node_name" >> /opt/ciphercloud/node-server/config/agent/application.properties && \
+    echo "node_nic=$node_nic" >>  /opt/ciphercloud/node-server/config/agent/application.properties && \
+    echo "node_token=$node_token" >>  /opt/ciphercloud/node-server/config/agent/application.properties && 
+    
 
 # Copy Service File
 
